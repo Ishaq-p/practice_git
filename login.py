@@ -2,6 +2,10 @@ import numpy as np
 import re
 import pandas as pd
 from getpass import getpass
+import mysql.connector
+
+data_base = mysql.connector.connect(host="localhost", user="root", password="Khanzaman #1231", database="User_info")
+cursor = data_base.cursor()
 
 class Login:
 
@@ -28,3 +32,4 @@ class Login:
 
     def decryption(self):
         pass
+
