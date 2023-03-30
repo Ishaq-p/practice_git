@@ -18,16 +18,13 @@ class Login:
     def __str__(self):
         return self.username
     
-    def search_for_exists(self):
+    def search_for_existence(self):
         pass
 
-    def password_valid(self):
+    def password_validity(self):
         pass
 
     def database(self):
-        pass
-
-    def encryption(self):
         pass
 
     def decryption(self):

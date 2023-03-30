@@ -9,7 +9,7 @@ cursor = data_base.cursor()
 
 class SignUp:
 
-    def __init__(self,Full_Name,email,username,password, getting_updates):
+    def __init__(self,Full_Name,email,username,password, getting_updates="0"):
         self.username = username
         self.password = password
         self.Full_Name = Full_Name
@@ -24,20 +24,27 @@ class SignUp:
         # while self.getting_updates != "0" and self.getting_updates != "1":
         #     self.getting_updates = input("would you like get notified with updates via email (0,1): ").strip()
 
+    def __str__(self):
+        return f"{self.username}, {self.password}, {self.Full_Name}, {self.email}, {self.getting_updates}"
 
-
-    def password_valid(self):
+    def username_context_validity(self):
+        pass
+    def email_context_validity(self):
+        pass
+    def password_context_validity(self):
+        pass
+    def email_uniqueness(self):
         pass
 
     def database(self):
-        INSERTION_query = ("INSERT INTO User_info.User_infSQ (username, password, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s)")
-        Values = (self.user_name, self.password, self.Full_Name, self.email, self.getting_updates)
+
+        INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s)")
+        Values = (self.username, self.password, self.Full_Name, self.email, self.getting_updates)
+        
         cursor.execute(INSERTION_query, Values)
         data_base.commit()
 
 
-    def encryption(self):
+    def data_encryption(self):
         pass
 
-    def decryption(self):
-        pass
