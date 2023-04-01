@@ -70,15 +70,61 @@ class SignUp:
     
 
     def password_context_validity(self):
-        pass
+        valid_chars = string.ascii_letters+"-_."+string.digits 
+        
+        if ' ' in self.password:
+            return False, "the passcode must not contain spaces."
+        
+        for i in self.password:
+            if i not in valid_chars:
+                return False, f"the passcode must only contain alphabets, digits, and (- _ .), {i}"
+            
+        return True, "valid passcode." 
+
+
     def email_uniqueness(self):
-        pass
+        cursor.execute(f"SELECT user_name FROM User_info.User_infSQ WHERE email = '{self.email}';")
+        lis = cursor.fetchall()
+        
+        try:
+            if len(lis):
+                return False, f"the email exists, and it's with {lis[0]}"
+        except Exception as e:
+            return False, f"{e}"
+        
+        return True, f"your {self.email} email is unique."
+    
+
+    def username_uniqueness(self):
+        cursor.execute(f"SELECT Full_Name FROM User_info.User_infSQ WHERE user_name = '{self.username}';")
+        lis = cursor.fetchall()
+        
+        try:
+            if len(lis)!=0:
+                return False, f"the username exists, and it's with {lis[0]}"
+        except Exception as e:
+            return False, f"{e}"
+        
+        return True, f"the {self.username} username is unique."
+
+
     def data_encryption(self):
         pass
 
 
+
+
 # TEST
-signup = SignUp("Aimal Amiri","aimal@xyz.com","emirkhan","Emirkhan**12")
-signup.database()
+signup = SignUp("Aimal Amiri","aimal@xyz.com","emirkhan","Emirkhan__12")
+
 print(signup.username_context_validity())
 print(signup.email_context_validity())
+print(signup.password_context_validity())
+print(signup.email_uniqueness())
+print(signup.username_uniqueness())
+
+if signup.username_context_validity()[0] and signup.email_context_validity()[0] and signup.password_context_validity()[0] and signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
+    signup.database()
+    print("saved to database, done!!")
+else:
+    print("something went wrong, please correct the mistake showing above.")

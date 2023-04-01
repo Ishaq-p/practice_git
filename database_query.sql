@@ -14,3 +14,9 @@ SELECT * FROM User_info.User_infSQ;
 -- INSERT INTO User_infSQ (user_name, Full_Name, email, password)
 -- VALUES ("shaqinair","Shaquille","shaqinair@gmail.com","123456");
 
+SELECT Full_Name FROM User_info.User_infSQ WHERE user_name = "emirkhan";
+
+SELECT user_name FROM User_info.User_infSQ WHERE user_name = "emirkhan";
+
+SELECT user_name FROM User_info.User_infSQ WHERE email = "shaqinair@gmail.com";
+
