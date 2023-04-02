@@ -4,7 +4,7 @@ CREATE TABLE  User_infSQ(
   user_name varchar(255) NOT NULL,
   Full_Name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
-  password varchar(255) NOT NULL,
+  password_ varchar(255) NOT NULL,
   getting_updates varchar(2) NOT NULL DEFAULT '0',
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -20,3 +20,13 @@ SELECT user_name FROM User_info.User_infSQ WHERE user_name = "emirkhan";
 
 SELECT user_name FROM User_info.User_infSQ WHERE email = "shaqinair@gmail.com";
 
+
+SELECT * FROM User_info.User_infSQ WHERE user_name = 'ishaqpaktin';
+
+UPDATE User_infSQ1
+SET password_ = 'abdelghafar'
+WHERE user_name = 'emirkhan'; 
+
+SELECT * FROM User_infSQ1;
+
+INSERT INTO User_infSQ1 (user_name, Full_Name, email, password_) VALUES ("emirkhan","Emir","KHAN@GMAIL.COM", "khanzaman**99");

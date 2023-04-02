@@ -12,7 +12,7 @@ cursor = data_base.cursor()
 
 class SignUp:
 
-    def __init__(self,Full_Name,email,username,password, getting_updates="0"):
+    def __init__(self,username,Full_Name,email,password, getting_updates="0"):
         self.username = username
         self.password = password
         self.Full_Name = Full_Name
@@ -29,7 +29,7 @@ class SignUp:
 
 
     def database(self):
-        INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s)")
+        INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password_, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s)")
         Values = (self.username, self.password, self.Full_Name, self.email, self.getting_updates)
         
         cursor.execute(INSERTION_query, Values)
@@ -71,6 +71,11 @@ class SignUp:
 
     def password_context_validity(self):
         valid_chars = string.ascii_letters+"-_."+string.digits 
+
+        if len(self.password) < 8:
+            return False, "the passcode must be at least 8 characters long."
+        elif len(self.password) >= 16:
+            return False, "the passcode must not be more than 16 characters long."
         
         if ' ' in self.password:
             return False, "the passcode must not contain spaces."
@@ -106,25 +111,35 @@ class SignUp:
             return False, f"{e}"
         
         return True, f"the {self.username} username is unique."
+    
 
-
-    def data_encryption(self):
+    def password_encryption(self):
         pass
+  
+
+    # def __del__(self):
+    #     cursor.close()
+    #     data_base.close()
+    #     print("database connection closed.")
 
 
 
-
-# TEST
-signup = SignUp("Aimal Amiri","aimal@xyz.com","emirkhan","Emirkhan__12")
-
-print(signup.username_context_validity())
-print(signup.email_context_validity())
-print(signup.password_context_validity())
-print(signup.email_uniqueness())
-print(signup.username_uniqueness())
-
-if signup.username_context_validity()[0] and signup.email_context_validity()[0] and signup.password_context_validity()[0] and signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
-    signup.database()
-    print("saved to database, done!!")
-else:
-    print("something went wrong, please correct the mistake showing above.")
+#  TESTS
+data = [['ishaqpaktin' , 'ishaq paktin yar', 'shaqiniar@gmail.com', 'Khanman-_22'   , '1'],
+        ['yunuskhan'   , 'yunus khan'      , 'yunus@xyz.com'      , 'yunusdF_33'    , '0'],
+        ['yousufpaktin', 'yousuf paktin'   , 'yousuf@icloud.com'  , 'yousufdF.33'   , '1'],
+        ['aimalamiri'  , 'aimal amiri'     , 'aimal@outlook.com'  , 'aimalDF_33'    , '0'],
+        ['johnwhick'   , 'john whick'      , 'jhon@khan.com'      , 'jhonDF--33'    , '1']]
+for i in data:
+    signup = SignUp(*i)
+    print(signup.username_context_validity())
+    print(signup.email_context_validity())
+    print(signup.password_context_validity())
+    print(signup.email_uniqueness())
+    print(signup.username_uniqueness())
+    if signup.username_context_validity()[0] and signup.email_context_validity()[0] and signup.password_context_validity()[0] and signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
+        signup.database()
+        print("saved to database, done!! \n")
+    else:
+        print("something went wrong, please correct the mistake showing above.")
+    del(signup)
