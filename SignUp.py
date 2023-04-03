@@ -4,15 +4,18 @@ import pandas as pd
 from getpass import getpass
 import mysql.connector
 import string
+import Database as DB
 
-data_base = mysql.connector.connect(host="localhost", user="root", password="Khanzaman #1231", database="User_info")
-cursor = data_base.cursor()
+# data_base = mysql.connector.connect(host="localhost", user="root", password="Khanzaman #1231", database="User_info")
+# cursor = data_base.cursor()
 
 
 
-class SignUp:
+class SignUp(DB.DataBase):
 
     def __init__(self,username,Full_Name,email,password, getting_updates="0"):
+        super().__init__(username,password)
+
         self.username = username
         self.password = password
         self.Full_Name = Full_Name
@@ -29,11 +32,8 @@ class SignUp:
 
 
     def database(self):
-        INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password_, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s)")
-        Values = (self.username, self.password, self.Full_Name, self.email, self.getting_updates)
-        
-        cursor.execute(INSERTION_query, Values)
-        data_base.commit()
+        DB.DataBase.insert(self, self.Full_Name, self.email, self.getting_updates)
+        return True, "the user is added to the database"
 
 
     def __str__(self):
@@ -88,12 +88,11 @@ class SignUp:
 
 
     def email_uniqueness(self):
-        cursor.execute(f"SELECT user_name FROM User_info.User_infSQ WHERE email = '{self.email}';")
-        lis = cursor.fetchall()
+        lis = DB.DataBase.select(self)
         
         try:
             if len(lis):
-                return False, f"the email exists, and it's with {lis[0]}"
+                return False, f"the email exists, and it's with {lis[0][1]}"
         except Exception as e:
             return False, f"{e}"
         
@@ -101,12 +100,11 @@ class SignUp:
     
 
     def username_uniqueness(self):
-        cursor.execute(f"SELECT Full_Name FROM User_info.User_infSQ WHERE user_name = '{self.username}';")
-        lis = cursor.fetchall()
+        lis = DB.DataBase.select(self)
         
         try:
             if len(lis)!=0:
-                return False, f"the username exists, and it's with {lis[0]}"
+                return False, f"the username exists, and it's with {lis[0][1]}"
         except Exception as e:
             return False, f"{e}"
         
@@ -125,21 +123,31 @@ class SignUp:
 
 
 #  TESTS
-data = [['ishaqpaktin' , 'ishaq paktin yar', 'shaqiniar@gmail.com', 'Khanman-_22'   , '1'],
-        ['yunuskhan'   , 'yunus khan'      , 'yunus@xyz.com'      , 'yunusdF_33'    , '0'],
-        ['yousufpaktin', 'yousuf paktin'   , 'yousuf@icloud.com'  , 'yousufdF.33'   , '1'],
-        ['aimalamiri'  , 'aimal amiri'     , 'aimal@outlook.com'  , 'aimalDF_33'    , '0'],
-        ['johnwhick'   , 'john whick'      , 'jhon@khan.com'      , 'jhonDF--33'    , '1']]
-for i in data:
-    signup = SignUp(*i)
-    print(signup.username_context_validity())
-    print(signup.email_context_validity())
-    print(signup.password_context_validity())
-    print(signup.email_uniqueness())
-    print(signup.username_uniqueness())
-    if signup.username_context_validity()[0] and signup.email_context_validity()[0] and signup.password_context_validity()[0] and signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
-        signup.database()
-        print("saved to database, done!! \n")
-    else:
-        print("something went wrong, please correct the mistake showing above.")
-    del(signup)
+
+signup = SignUp('peter'   , 'Peter'      , 'peter@icloud.com'      , 'PeTer-33'    , '1')
+print(signup.email_uniqueness())
+print(signup.username_uniqueness())
+if signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
+    print(signup.database())
+    print(signup.close())
+
+
+
+# data = [['ishaqpaktin' , 'ishaq paktin yar', 'shaqiniar@gmail.com', 'Khanman-_22'   , '1'],
+#         ['yunuskhan'   , 'yunus khan'      , 'yunus@xyz.com'      , 'yunusdF_33'    , '0'],
+#         ['yousufpaktin', 'yousuf paktin'   , 'yousuf@icloud.com'  , 'yousufdF.33'   , '1'],
+#         ['aimalamiri'  , 'aimal amiri'     , 'aimal@outlook.com'  , 'aimalDF_33'    , '0'],
+#         ['johnwhick'   , 'john whick'      , 'jhon@khan.com'      , 'jhonDF--33'    , '1']]
+# for i in data:
+#     signup = SignUp(*i)
+#     print(signup.username_context_validity())
+#     print(signup.email_context_validity())
+#     print(signup.password_context_validity())
+#     print(signup.email_uniqueness())
+#     print(signup.username_uniqueness())
+#     if signup.username_context_validity()[0] and signup.email_context_validity()[0] and signup.password_context_validity()[0] and signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
+#         signup.database()
+#         print("saved to database, done!! \n")
+#     else:
+#         print("something went wrong, please correct the mistake showing above.")
+#     del(signup)
