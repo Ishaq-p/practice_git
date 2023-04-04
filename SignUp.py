@@ -6,7 +6,7 @@ import mysql.connector
 import string
 import Database as DB
 
-# data_base = mysql.connector.connect(host="localhost", user="root", password="Khanzaman #1231", database="User_info")
+# data_base = mysql.connector.connect(host="localhost", user="root", password="", database="User_info")
 # cursor = data_base.cursor()
 
 
@@ -69,22 +69,48 @@ class SignUp(DB.DataBase):
         return (True, provider, usrnam, domain)
     
 
-    def password_context_validity(self):
+    def password_context_validity(self, status=True):
         valid_chars = string.ascii_letters+"-_."+string.digits 
 
-        if len(self.password) < 8:
-            return False, "the passcode must be at least 8 characters long."
-        elif len(self.password) >= 16:
-            return False, "the passcode must not be more than 16 characters long."
-        
-        if ' ' in self.password:
-            return False, "the passcode must not contain spaces."
-        
-        for i in self.password:
-            if i not in valid_chars:
-                return False, f"the passcode must only contain alphabets, digits, and (- _ .), {i}"
+        if status:
+            if len(self.password) < 8:
+                return False, "the passcode must be at least 8 characters long."
+            elif len(self.password) >= 16:
+                return False, "the passcode must not be more than 16 characters long."
             
-        return True, "valid passcode." 
+            if ' ' in self.password:
+                return False, "the passcode must not contain spaces."
+            
+            for i in self.password:
+                if i not in valid_chars:
+                    return False, f"the passcode must only contain alphabets, digits, and (- _ .), {i}"
+                
+            return True, "valid passcode."
+        
+        else:
+            passcode0 = getpass("please enter your new password: ")
+            if passcode0 == self.password:
+                return False, "the new password is same as the old one."
+            
+            if len(passcode0) < 8:
+                return False, "the passcode must be at least 8 characters long."
+            elif len(passcode0) >= 16:
+                return False, "the passcode must not be more than 16 characters long."
+            
+            if ' ' in passcode0:
+                return False, "the passcode must not contain spaces."
+            
+            for i in passcode0:
+                if i not in valid_chars:
+                    return False, f"the passcode must only contain alphabets, digits, and (- _ .), {i}"
+
+            passcode1 = getpass("please re-enter your new password: ")
+            if passcode0 == passcode1:
+                self.password = passcode0
+                DB.DataBase.update(self, self.password)
+                return True, "the password has been changed"
+            else:
+                return False, "the passwords do not match" 
 
 
     def email_uniqueness(self):
@@ -124,12 +150,12 @@ class SignUp(DB.DataBase):
 
 #  TESTS
 
-signup = SignUp('peter'   , 'Peter'      , 'peter@icloud.com'      , 'PeTer-33'    , '1')
-print(signup.email_uniqueness())
-print(signup.username_uniqueness())
-if signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
-    print(signup.database())
-    print(signup.close())
+# signup = SignUp('peter'   , 'Peter'      , 'peter@icloud.com'      , 'PeTer-33'    , '1')
+# print(signup.email_uniqueness())
+# print(signup.username_uniqueness())
+# if signup.email_uniqueness()[0] and signup.username_uniqueness()[0]:
+#     print(signup.database())
+#     print(signup.close())
 
 
 

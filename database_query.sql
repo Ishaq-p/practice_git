@@ -30,3 +30,6 @@ WHERE user_name = 'emirkhan';
 SELECT * FROM User_infSQ1;
 
 INSERT INTO User_infSQ1 (user_name, Full_Name, email, password_) VALUES ("emirkhan","Emir","KHAN@GMAIL.COM", "khanzaman**99");
+
+
+SELECT * FROM User_infSQ;
