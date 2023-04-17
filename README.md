@@ -5,3 +5,7 @@ on contrary if the username exists the software will run the Log in function suc
 ## Sign Up
 as it is mentioned above the signup function is valid for usernames that doesn't exist in the database; so how do the signup function work?
 
+## Log In
+...
+
+## Main
