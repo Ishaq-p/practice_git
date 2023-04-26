@@ -17,9 +17,11 @@ class Login(SU.SignUp, DB.DataBase):
         self.password = password
 
         self.lis = DB.DataBase.select(self)
-        if self.lis == []:
-            return False, "the username is not found"
-        else:
+        
+        # if self.lis == []:
+        #     print("DB.database")
+        #     return (False, "the username is not found")
+        if self.lis != []:
             self.lis = self.lis[0]
             self.Full_Name = self.lis[1]
             self.email = self.lis[2]
@@ -35,7 +37,7 @@ class Login(SU.SignUp, DB.DataBase):
     def search_for_existence(self):
         # lis = DB.DataBase.select(self)
         if self.lis == []:
-            return False, "the username is not found"
+            return False,"the username is not found" 
         else:
             if self.password == self.lis[3]:
                 return True, "the password is correct"

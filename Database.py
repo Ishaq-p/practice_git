@@ -10,7 +10,7 @@ class DataBase:
         self.password = password
 
     def insert(self, Full_Name, email, getting_updates):
-        INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password_, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s)")
+        INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password_, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s);")
         Values = (self.username, self.password, Full_Name, email, getting_updates)
         
         cursor.execute(INSERTION_query, Values)

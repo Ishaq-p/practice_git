@@ -2,6 +2,7 @@ import numpy as np
 import re
 import pandas as pd
 from getpass import getpass
+from Database import DataBase as DB
 # import mysql.connector
 
 # data_base = mysql.connector.connect(host="localhost", user="root", password="", database="User_info")
@@ -11,6 +12,7 @@ import SignUp as SU
 import login as LI
 
 user = input("do you have an account? (y/n): ").strip()
+
 if user == "y":
     username = input("please enter your username: ").strip()
     password = getpass("please enter your password: ")
@@ -18,7 +20,11 @@ if user == "y":
     user = LI.Login(username,password)
     bol, msg = user.search_for_existence()
 
-    if not bol:
+    if (bol, msg) == (False,"the username is not found"):
+        print("username is not found")
+        
+
+    elif not bol:
         print(msg)
         ask_ = input("would you like to change your password? (y/n): ").strip()
 
