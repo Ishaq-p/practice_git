@@ -5,9 +5,12 @@ cursor = data_base.cursor()
 
 
 class DataBase:
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+    def __init__(self, username, password, forgot_password=False):
+        if forgot_password:
+            self.username = username
+        else:    
+            self.username = username
+            self.password = password
 
     def insert(self, Full_Name, email, getting_updates):
         INSERTION_query = ("INSERT INTO User_info.User_infSQ (user_name, password_, Full_Name, email, getting_updates) VALUES (%s, %s, %s, %s, %s);")
